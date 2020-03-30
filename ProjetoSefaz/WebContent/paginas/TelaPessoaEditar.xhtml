@@ -1,0 +1,97 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templatePrincipal.xhtml">
+
+	<ui:define name="cabecalho">
+		<p:graphicImage url="/resources/img/SefazCabecalho.jpg"
+			width="100%" height="75px" />
+	</ui:define>
+
+	<ui:define name="conteudo">
+
+		<p:messages id="messages" showDetail="true" closable="true">
+			<p:autoUpdate />
+		</p:messages>
+
+		<p:tabView>
+			<!-- TAB PARA EDITAR PESSOA -->
+			<p:tab title="Editar Pessoa">
+				<h:panelGrid columns="2">
+
+					<!-- NOME PESSOA -->
+					<p:outputLabel value="" />
+					<p:outputLabel value="Nome: " />
+					<p:inputText value="#{PessoaBean.pessoaEditar.nome}"
+						style="text-transform:uppercase" />
+
+					<!-- CPF DA PESSOA-->
+					<p:outputLabel value="" />
+					<p:outputLabel value="CPF: " />
+					<p:inputMask value="#{PessoaBean.pessoaEditar.cpf}" mask="999.999.999-99" readonly="true"/>
+
+					<!-- IDADE PESSOA -->
+					<p:outputLabel value="" />
+					<p:outputLabel value="Idade: " />
+					<p:inputText value="#{PessoaBean.pessoaEditar.idade}"
+						style="text-transform:uppercase" />
+
+					<!-- SEXO PESSOA -->
+					<p:outputLabel value="" />
+					<p:outputLabel value="Sexo: " />
+					<p:inputText value="#{PessoaBean.pessoaEditar.sexo}"
+						style="text-transform:uppercase" />
+
+					<!-- RUA PESSOA -->
+					<p:outputLabel value="" />
+					<p:outputLabel value="Rua: " />
+					<p:inputText value="#{PessoaBean.enderecoEditar.rua}"
+						style="text-transform:uppercase" />
+
+					<!-- NÚMERO ENDEREÇO PESSOA -->
+					<p:outputLabel value="" />
+					<p:outputLabel value="Número: " />
+					<p:inputText value="#{PessoaBean.enderecoEditar.numero}"
+						style="text-transform:uppercase" />
+
+					<!-- COMPLEMENTO PESSOA -->
+					<p:outputLabel value="" />
+					<p:outputLabel value="Complemento: " />
+					<p:inputText value="#{PessoaBean.enderecoEditar.complemento}"
+						style="text-transform:uppercase" />
+
+					<!-- SENHA DA PESSOA -->
+					<!-- Senha inserir -->
+					<p:outputLabel value=" " />
+					<p:outputLabel value="Senha: " />
+					<p:password size="8" id="senhaInserir"
+						value="#{PessoaBean.pessoaEditar.senha}" feedback="true"
+						promptLabel="digite a senha" weakLabel="senha fraca"
+						goodLabel="senha média" strongLabel="senha forte" />
+
+					<!-- Senha inserir confirmar -->
+					<p:outputLabel value=" " />
+					<p:outputLabel value="Repita a senha: " />
+					<p:password size="8" id="senhaAtualizarConfirmar"
+						value="#{PessoaBean.confirmarSenhaEditar}" feedback="true"
+						promptLabel="repita a senha" weakLabel="senha fraca"
+						goodLabel="senha média" strongLabel="senha forte" />
+				</h:panelGrid>
+				<br />
+				<p:row>
+					<p:commandButton value="Alterar" update="@form"
+						action="#{PessoaBean.editar}" />
+					<p:button value="" disabled="true" />
+
+					<p:commandButton value="Voltar" update="@form"
+						action="#{PessoaBean.voltarParaTelaPessoa}" />
+				</p:row>
+			</p:tab>
+		</p:tabView>
+
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,181 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templatePrincipal.xhtml">
+
+	<ui:define name="cabecalho">
+		<p:graphicImage url="/resources/img/SefazCabecalho.jpg" width="100%"
+			height="75px" />
+	</ui:define>
+
+	<ui:define name="conteudo">
+		<p:messages id="messages" showDetail="true" closable="true">
+			<p:autoUpdate />
+		</p:messages>
+
+		<p:tabView>
+			<!-- TAB PARA PESQUISAR PESSOA -->
+			<p:tab title="Pesquisar Pessoa">
+				<p:panelGrid style="width:950px; ">
+					<p:row>
+						<p:column>						
+
+							<!-- Cpf pesquisa -->
+							<p:outputLabel value=" " />
+							<p:outputLabel value="CPF: " />
+							<p:inputMask size="11" value="#{PessoaBean.pessoaPesquisa.cpf}"
+								mask="999.999.999-99" />						
+
+						</p:column>
+					</p:row>				
+				</p:panelGrid>
+
+				<h:panelGrid style="width:1000px; ">
+
+					<p:row>
+						<p:commandButton value="Pesquisar" update="@form"
+							actionListener="#{PessoaBean.pesquisarCpf}" />
+
+						<p:button value="" disabled="true" />
+
+						<p:commandButton value="Limpar" update="@form"
+							action="#{PessoaBean.limparCampos}" />
+					</p:row>
+
+					<p:dataTable value="#{PessoaBean.listaPessoas}" var="p" rows="30"
+						paginator="true"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						emptyMessage="Nenhum Registro Encontrado">
+
+						<p:column headerText="NOME" width="70" sortBy="#{p.nome}">
+							<p:outputLabel value="#{p.nome}" />
+						</p:column>
+
+						<p:column headerText="CPF" style="text-align: center"
+							sortBy="#{p.cpf}" rendered="true" width="40">
+							<p:outputLabel value="#{p.cpf}" />
+						</p:column>
+
+						<p:column headerText="IDADE" style="text-align: center" width="20"
+							sortBy="#{p.idade}">
+							<p:outputLabel value="#{p.idade}" />
+						</p:column>
+
+						<p:column headerText="SEXO" style="text-align: center" width="15"
+							sortBy="#{p.sexo}">
+							<p:outputLabel value="#{p.sexo}" />
+						</p:column>
+
+						<p:column headerText="RUA" style="text-align: center" width="50"
+							sortBy="#{p.endereco.rua}">
+							<p:outputLabel value="#{p.endereco.rua}" />
+						</p:column>
+
+						<p:column headerText="NÚMERO" style="text-align: center"
+							width="30" sortBy="#{p.endereco.numero}">
+							<p:outputLabel value="#{p.endereco.numero}" />
+						</p:column>
+
+						<p:column headerText="COMPLEMENTO" style="text-align: center"
+							width="70" sortBy="#{p.endereco.complemento}">
+							<p:outputLabel value="#{p.endereco.complemento}" />
+						</p:column>
+
+						<p:column headerText="AÇÕES" width="30" style="text-align: center">
+
+							<h:commandButton value="Excluir"
+								onclick="return confirm('Confirma a exclusão?')"
+								action="#{PessoaBean.excluir(p)}" update="@form" />
+
+							<p:outputLabel> / </p:outputLabel>
+
+							<h:commandButton value="Editar"
+								action="#{PessoaBean.prepararEditar}">
+
+								<f:setPropertyActionListener
+									target="#{PessoaBean.cpfPessoaEditar}" value="#{p.cpf}" />
+							</h:commandButton>
+						</p:column>
+					</p:dataTable>
+				</h:panelGrid>
+			</p:tab>
+
+			<!-- TAB DE INSERIR PESSOA -->
+			<p:tab title="Inserir Pessoa">
+				<h:panelGrid columns="2">
+
+					<!-- NOME PESSOA -->
+					<p:outputLabel value="" />
+					<p:outputLabel value="Nome: " />
+					<p:inputText value="#{PessoaBean.pessoa.nome}"
+						style="text-transform:uppercase" />
+
+					<!-- CPF DA PESSOA-->
+					<p:outputLabel value="" />
+					<p:outputLabel value="CPF: " />
+					<p:inputMask value="#{PessoaBean.pessoa.cpf}" mask="999.999.999-99" />
+
+					<!-- IDADE PESSOA -->
+					<p:outputLabel value="" />
+					<p:outputLabel value="Idade: " />
+					<p:inputText value="#{PessoaBean.pessoa.idade}"
+						style="text-transform:uppercase" />
+
+					<!-- SEXO PESSOA -->
+					<p:outputLabel value="" />
+					<p:outputLabel value="Sexo: " />
+					<p:inputText value="#{PessoaBean.pessoa.sexo}"
+						style="text-transform:uppercase" />
+
+					<!-- RUA PESSOA -->
+					<p:outputLabel value="" />
+					<p:outputLabel value="Rua: " />
+					<p:inputText value="#{PessoaBean.endereco.rua}"
+						style="text-transform:uppercase" />
+
+					<!-- NÚMERO ENDEREÇO PESSOA -->
+					<p:outputLabel value="" />
+					<p:outputLabel value="Número: " />
+					<p:inputText value="#{PessoaBean.endereco.numero}"
+						style="text-transform:uppercase" />
+
+					<!-- COMPLEMENTO PESSOA -->
+					<p:outputLabel value="" />
+					<p:outputLabel value="Complemento: " />
+					<p:inputText value="#{PessoaBean.endereco.complemento}"
+						style="text-transform:uppercase" />
+
+					<!-- SENHA DA PESSOA -->
+					<!-- Senha inserir -->
+					<p:outputLabel value=" " />
+					<p:outputLabel value="Senha: " />
+					<p:password size="8" id="senhaInserir"
+						value="#{PessoaBean.pessoa.senha}" feedback="true"
+						promptLabel="digite a senha" weakLabel="senha fraca"
+						goodLabel="senha média" strongLabel="senha forte" />
+
+					<!-- Senha inserir confirmar -->
+					<p:outputLabel value=" " />
+					<p:outputLabel value="Repita a senha: " />
+					<p:password size="8" id="senhaAtualizarConfirmar"
+						value="#{PessoaBean.confirmarSenha}" feedback="true"
+						promptLabel="repita a senha" weakLabel="senha fraca"
+						goodLabel="senha média" strongLabel="senha forte" />
+				</h:panelGrid>
+				<br />
+				<p:row>
+					<p:commandButton value="Salvar" update="@form"
+						action="#{PessoaBean.salvar}" />
+					<p:button value="" disabled="true" />
+
+					<p:commandButton value="Limpar" update="@form"
+						action="#{PessoaBean.limparCampos}" />
+				</p:row>
+			</p:tab>
+		</p:tabView>
+	</ui:define>
+</ui:composition>
+</html>
